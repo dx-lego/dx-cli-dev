@@ -1,3 +1,3 @@
 #! /usr/bin/env node
 
-console.log('hello dx-cli-dev')
+console.log('hello dx-cli-dev!!!')
