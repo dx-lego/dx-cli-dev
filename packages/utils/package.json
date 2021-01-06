@@ -1,6 +1,6 @@
 {
   "name": "@dx-cli-dev/utils",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "dx-cli-dev utils",
   "author": "amurocrash <amurocrash@126.com>",
   "homepage": "",
@@ -14,13 +14,10 @@
     "lib"
   ],
   "publishConfig": {
-    "registry": "http://registry.npmjs.org/"
+    "access": "public"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
-  "gitHead": "67c224730029de53bc98097bf271c5ff8d7881ce",
-  "publishConfig": {
-    "access": "public"
-  }
+  "gitHead": "67c224730029de53bc98097bf271c5ff8d7881ce"
 }
