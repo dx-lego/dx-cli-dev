@@ -5,7 +5,7 @@
   "author": "amurocrash <amurocrash@126.com>",
   "homepage": "",
   "license": "ISC",
-  "main": "lib/core.js",
+  "main": "",
   "bin": {
     "dx-cli-dev": "bin/index.js"
   },
@@ -21,6 +21,19 @@
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "@dx-cli-dev/log": "file:../../utils/log",
+    "@dx-cli-dev/utils": "file:../../utils/utils",
+    "@dx-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
+    "colors": "^1.4.0",
+    "dotenv": "^8.2.0",
+    "import-local": "^3.0.2",
+    "minimist": "^1.2.5",
+    "path-exists": "^4.0.0",
+    "root-check": "^1.0.0",
+    "semver": "^7.3.4",
+    "user-home": "^2.0.0"
   },
   "gitHead": "67c224730029de53bc98097bf271c5ff8d7881ce"
 }
