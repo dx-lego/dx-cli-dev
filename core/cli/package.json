@@ -1,6 +1,6 @@
 {
   "name": "@dx-cli-dev/core",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "dx-cli-dev core",
   "author": "amurocrash <amurocrash@126.com>",
   "homepage": "",
@@ -23,9 +23,9 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
+    "@dx-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
     "@dx-cli-dev/log": "file:../../utils/log",
     "@dx-cli-dev/utils": "file:../../utils/utils",
-    "@dx-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",
     "import-local": "^3.0.2",
