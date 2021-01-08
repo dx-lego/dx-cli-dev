@@ -131,7 +131,7 @@ async function checkGlobalUpdate () {
   if (latestVersion && semver.gt(latestVersion, currentVersion)) {
     logger.warn(colors.yellow(`请手动更新${npmName}，当前版本${currentVersion}，最新版本${latestVersion}，更新命令：npm i -g ${npmName}`))
   } else {
-    logger.verbose(`当前为最新版本${latestVersion}`)
+    logger.verbose(`当前已经为最新版本${latestVersion}`)
   }
 }
 
