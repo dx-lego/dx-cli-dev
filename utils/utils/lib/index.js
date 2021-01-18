@@ -1,8 +1,9 @@
 'use strict';
 
-module.exports = index;
+function isObject(o) {
+   return Object.prototype.toString.call(o) === '[object Object]'
+}
 
-function index() {
-    // TODO
-  console.log('utils invoke!!!!')
+module.exports = {
+  isObject,
 }

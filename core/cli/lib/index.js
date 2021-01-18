@@ -10,44 +10,49 @@ const semver = require('semver')
 const colors = require('colors/safe')
 const userHome = require('user-home')
 const pathExists = require('path-exists').sync
+const commander =require('commander')
+const init = require('@dx-cli-dev/init')
+const exec = require('@dx-cli-dev/exec')
 
 let TEST_MODEL = false
+let LOCAL_DEBUG = true
+
+const program = new commander.Command()
 
 async function core(argv) {
   try {
-    let args = checkArgs(argv)
-
-    if (TEST_MODEL) {
-      test()
-      return
-    }
-
-    let version = checkVersion()
-    let nodeVersion = checkNodeVersion()
-    let uid = checkRoot()
-    let userHome = checkUserHome()
-    let env = checkEnv()
-    await checkGlobalUpdate()
+    await prepare()
+    registerCommand()
 
   } catch (e) {
     logger.error(e.message)
   }
 }
 
-function checkVersion () {
+
+async function prepare () {
+  let version = checkPkgVersion()
+  // let nodeVersion = checkNodeVersion()
+  let uid = checkRoot()
+  let userHome = checkUserHome()
+  let env = checkEnv()
+  await checkGlobalUpdate()
+}
+
+function checkPkgVersion () {
   return pkg.version
 }
 
-function checkNodeVersion () {
-  let currentVersion = process.version
-  let lowestVersion = constant.LOWEST_NODE_VERSION
-
-  if (!semver.gte(currentVersion, lowestVersion)) {
-    throw new Error(colors.red(`dx-cli需要安装v${lowestVersion}以上版本的node.js`))
-  } else {
-    return currentVersion
-  }
-}
+// function checkNodeVersion () {
+//   let currentVersion = process.version
+//   let lowestVersion = constant.LOWEST_NODE_VERSION
+//
+//   if (!semver.gte(currentVersion, lowestVersion)) {
+//     throw new Error(colors.red(`dx-cli需要安装v${lowestVersion}以上版本的node.js`))
+//   } else {
+//     return currentVersion
+//   }
+// }
 
 function checkRoot () {
   const rootCheck = require('root-check')
@@ -62,29 +67,6 @@ function checkUserHome () {
   } else {
     return userHome
   }
-}
-
-function getInputArgs (argv) {
-  const minimist = require('minimist')
-  const args = minimist(argv)
-  return args
-}
-
-function checkArgs(argv) {
-  let args = getInputArgs(argv)
-  if (args.debug || args.test) {
-    process.env.LOG_LEVEL = 'verbose'
-  } else {
-    process.env.LOG_LEVEL = 'info'
-  }
-
-  logger.level = process.env.LOG_LEVEL
-
-  if (args.test) {
-    TEST_MODEL = true
-  }
-
-  return args
 }
 
 function checkEnv () {
@@ -123,23 +105,69 @@ function createDefaultConfig () {
 }
 
 async function checkGlobalUpdate () {
+  if (LOCAL_DEBUG) {
+    return
+  }
+
   let currentVersion = pkg.version
   const npmName = pkg.name
 
+  logger.info('update', '检查更新...')
   const {getNpmSemverVersions} = require('@dx-cli-dev/get-npm-info')
   const latestVersion = await getNpmSemverVersions(currentVersion, npmName)
   if (latestVersion && semver.gt(latestVersion, currentVersion)) {
     logger.warn(colors.yellow(`请手动更新${npmName}，当前版本${currentVersion}，最新版本${latestVersion}，更新命令：npm i -g ${npmName}`))
   } else {
-    logger.verbose(`当前已经为最新版本${latestVersion}`)
+    logger.info('update', `当前已经为最新版本${latestVersion}`)
+  }
+}
+
+function registerCommand () {
+  program
+    .name(Object.keys(pkg.bin)[0])
+    .usage('<command> [options]')
+    .version(pkg.version)
+    .option('-d, --debug', 'debug mode or not', false)
+    .option('-t, --test', 'test mode or not', false)
+    .option('-tp, --targetPath <targetPath>', 'whether assign the local debug file path', '')
+
+  program
+    .command('init [projectName]')
+    .option('-f, --force', 'force init the project')
+    .action(exec)
+
+  program.on('option:debug', () => {
+    if (program.debug) {
+      process.env.LOG_LEVEL = 'verbose'
+    } else {
+      process.env.LOG_LEVEL = 'info'
+    }
+
+    logger.level = process.env.LOG_LEVEL
+  })
+
+  program.on('option:test', () => {
+    test()
+  })
+
+  program.on('option:targetPath', () => {
+    process.env.CLI_TARGET_PATH = program.targetPath
+  })
+
+  program.on('command:*', obj => {
+    const availableCommands = program.commands.map(cmd => cmd.name())
+    console.log(colors.red('unknown command: ' + obj[0]))
+    console.log(colors.green('available command: ' + availableCommands.join(', ')))
+  })
+
+  program.parse()
+
+  if (program.args && program.args.length < 1) {
+    program.outputHelp()
   }
 }
 
 // ******************* Test ********************//
 function test() {
-  let arr = [3, 5, 6, 1, 7]
-  arr.sort(function (a, b) {
-    return b - a
-  })
-  console.log(arr)
+  console.log('===================== test output ======================')
 }
