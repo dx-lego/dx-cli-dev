@@ -1,6 +1,6 @@
 {
-  "name": "@dx-cli-dev/init",
-  "version": "1.0.7",
+  "name": "@dx-cli-dev/request",
+  "version": "1.0.0",
   "description": "> TODO: description",
   "author": "amurocrash <amurocrash@126.com>",
   "homepage": "https://github.com/dx-lego/dx-cli-dev#readme",
@@ -27,17 +27,6 @@
     "url": "https://github.com/dx-lego/dx-cli-dev/issues"
   },
   "dependencies": {
-    "@dx-cli-dev/command": "file:../../models/command",
-    "@dx-cli-dev/log": "file:../../utils/log",
-    "@dx-cli-dev/package": "file:../../models/package",
-    "@dx-cli-dev/request": "file:../../utils/request",
-    "@dx-cli-dev/utils": "file:../../utils/utils",
-    "ejs": "^3.1.5",
-    "fs-extra": "^9.1.0",
-    "glob": "^7.1.6",
-    "inquirer": "^7.3.3",
-    "kebab-case": "^1.0.0",
-    "semver": "^7.3.4",
-    "user-home": "^2.0.0"
+    "axios": "^0.21.1"
   }
 }

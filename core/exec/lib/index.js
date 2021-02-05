@@ -1,9 +1,10 @@
 'use strict';
 
-const cp = require('child_process')
+// const cp = require('child_process')
 const path = require('path')
 const Package = require('@dx-cli-dev/package')
 const logger = require('@dx-cli-dev/log')
+const utils = require('@dx-cli-dev/utils')
 
 const SETTINGS = {
   init: 'axios'
@@ -67,7 +68,7 @@ async function exec() {
       args[args.length - 1] = o
 
       const code = `require('${rootFile}').call(null, ${JSON.stringify(args)})`
-      const childProcess = spawn('node', ['-e', code], {
+      const childProcess = utils.exec('node', ['-e', code], {
         cwd: process.cwd(),
         stdio: 'inherit'
       })
@@ -87,12 +88,12 @@ async function exec() {
   }
 }
 
-function spawn (command, args, options) {
-  const win32 = process.platform === 'win32'
-  const cmd = win32 ? 'cmd' : command
-  const cmdArgs = win32 ? ['/c'].concat(command, args) : args
-
-  return cp.spawn(cmd, cmdArgs, options || {})
-}
+// function spawn (command, args, options) {
+//   const win32 = process.platform === 'win32'
+//   const cmd = win32 ? 'cmd' : command
+//   const cmdArgs = win32 ? ['/c'].concat(command, args) : args
+//
+//   return cp.spawn(cmd, cmdArgs, options || {})
+// }
 
 module.exports = exec

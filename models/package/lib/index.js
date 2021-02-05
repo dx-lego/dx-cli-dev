@@ -80,8 +80,8 @@ class Package {
           version: latestPackageVersion
         }]
       })
-      this.packageVersion = latestPackageVersion
     }
+    this.packageVersion = latestPackageVersion
 
     return latestFilePath
   }
