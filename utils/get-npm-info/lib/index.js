@@ -38,7 +38,8 @@ async function getNpmVersions (npmName, registry) {
 
 function getSemverVersions (baseVersion, versions) {
   versions = versions.filter(version => {
-    return semver.satisfies(version, `^${baseVersion}`)
+    //return semver.satisfies(version, `^${baseVersion}`)
+    return semver.gte(version, baseVersion)
   }).sort(getSortFunc(true))
 
   return versions
